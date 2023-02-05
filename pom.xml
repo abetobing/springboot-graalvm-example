@@ -66,6 +66,61 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.graalvm.buildtools</groupId>
+                    <artifactId>native-maven-plugin</artifactId>
+                    <configuration>
+                        <!-- Mockito is not supported -->
+                        <skipNativeTests>true</skipNativeTests>
+                    </configuration>
+                </plugin>
+                <!-- We can compile the application in AOT mode but not producing a native image -->
+                <!-- If we active this plugin  -->
+                <!-- and deactive all the pom native component -->
+                <!--     <plugin>
+                         <groupId>org.springframework.boot</groupId>
+                         <artifactId>spring-boot-maven-plugin</artifactId>
+                         <configuration>
+                             <jvmArguments> -agentlib:native-image-agent=config-output-dir=target/native-image
+                             </jvmArguments>
+                             <systemPropertyVariables>
+                                 <springAot>true</springAot>
+                             </systemPropertyVariables>
+                         </configuration>
+                     </plugin>  -->
+            </plugins>
+        </pluginManagement>
     </build>
+
+    <profiles>
+        <!-- The native profile is already defined by the parent POM. -->
+        <!-- To use this plugin, we need GraalVM (located under $GRAALVM_HOME) and -->
+        <!-- native-builder (located in the $PATH) -->
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+
+            </build>
+        </profile>
+    </profiles>
+
 
 </project>
