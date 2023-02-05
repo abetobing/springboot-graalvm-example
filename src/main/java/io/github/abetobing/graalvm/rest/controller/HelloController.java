@@ -1,6 +1,7 @@
 package io.github.abetobing.graalvm.rest.controller;
 
 import io.github.abetobing.graalvm.rest.dto.Hello;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,8 +13,8 @@ import java.time.Instant;
 public class HelloController {
 
     @GetMapping
-    public Object home() {
-        return new Hello("Abe", "Nice to meet you", Instant.now().toString());
+    public ResponseEntity<Hello> home() {
+        return ResponseEntity.ok(new Hello("Abe", "Nice to meet you", Instant.now().toString()));
     }
 
 }
